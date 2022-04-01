@@ -9,7 +9,9 @@
 	<title>To Do List</title>
 </head>
 <body class="bg-info">
-	@yield('body')
+	<div class="container-fluid">
+		@yield('body')
+	</div>
 
 	@include('_scripts')
 	@yield('scripts')
