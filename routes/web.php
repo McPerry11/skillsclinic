@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TasksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', function () {
-    return view('dashboard');
-});
+Route::get('login', [LoginController::class, 'view'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::any('logout', [LoginController::class, 'logout']);
 
-Route::get('login', function() {
-    return view('login');
+Route::middleware(['auth'])->group(function() {
+    Route::get('', [TasksController::class, 'index']);
+    Route::post('create', [TasksController::class, 'store']);
+    Route::get('edit/{id}', [TasksController::class, 'edit']);
+    Route::post('update/{id}', [TasksController::class, 'update']);
+    Route::get('delete/{id}', [TasksController::class, 'destroy']);
 });
