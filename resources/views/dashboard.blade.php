@@ -138,9 +138,6 @@
 
 @section('scripts')
 @if($edittask != null)
-<script>
-	var myModal = new bootstrap.Modal(document.getElementById('edittask'));
-	myModal.show();
-</script>
+<script src="{{ asset('js/dashboard.js') }}"></script>
 @endif
 @endsection
