@@ -7,7 +7,7 @@
 			<div class="card-body">
 				<div class="row align-items-center">
 					<div class="col">
-						<h2>Hi, User!</h2>
+						<h2>Hi, {{ $username }}!</h2>
 					</div>
 					<div class="col-5 col-sm-4 col-xl-3">
 						<div class="d-grid d-flex justify-content-end align-items-center">
@@ -121,7 +121,7 @@
 					<label for="task">Task Title</label>
 				</div>
 				<div class="form-floating">
-					<input type="datetime-local" class="form-control" id="datetime" placeholder="Date & Time" name="duedate" value="{{ $edittask->duedate ? \Carbon\Carbon::parse($edittask->duedate)->isoFormat('YYYY-MM-DDThh:mm') : '' }}">
+					<input type="datetime-local" class="form-control" id="datetime" placeholder="Date & Time" name="duedate" value="{{ $edittask->duedate }}">
 					<label for="datetime">Date & Time</label>
 				</div>
 			</div>

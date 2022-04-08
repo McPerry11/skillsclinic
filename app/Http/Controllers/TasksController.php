@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Carbon\Carbon;
 use Auth;
 
 class TasksController extends Controller
@@ -16,9 +17,11 @@ class TasksController extends Controller
     public function index()
     {
         $tasks = Task::orderBy('updated_at', 'desc')->get();
+        $username = Auth::user()->username;
 
         return view('dashboard', [
             'tasks' => $tasks,
+            'username' => $username,
             'edittask' => null
         ]);
     }
@@ -78,9 +81,14 @@ class TasksController extends Controller
         // GET method
         $tasks = Task::orderBy('updated_at', 'desc')->get();
         $task = Task::find($id);
+        if ($task->duedate != null)
+            $task->duedate = Carbon::parse($task->duedate)->isoFormat('YYYY-MM-DDThh:mm');
+
+        $username = Auth::user()->username;
 
         return view('dashboard', [
             'tasks' => $tasks,
+            'username' => $username,
             'edittask' => $task
         ]);
     }

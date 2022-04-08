@@ -17,6 +17,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('name');
             $table->datetime('duedate')->nullable();
+            $table->boolean('completed')->default(false);
             $table->foreignId('user_id');
             $table->timestamps();
         });
