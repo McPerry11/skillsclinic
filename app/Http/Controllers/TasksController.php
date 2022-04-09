@@ -103,15 +103,21 @@ class TasksController extends Controller
         // POST method
         $task = Task::find($id);
 
-        $task->name = $request->name;
-        $task->duedate = $request->duedate;
+        if ($request->completed != null) {
+            $task->completed = $request->completed;
 
-        $task->save();
+            $task->save();
+        } else {
+            $task->name = $request->name;
+            $task->duedate = $request->duedate;
 
-        return response()->json([
-            'status' => 'success',
-            'msg' => 'Updated Successfully'
-        ]);
+            $task->save();
+
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Updated Successfully'
+            ]);
+        }
     }
 
     /**

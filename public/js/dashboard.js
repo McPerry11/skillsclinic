@@ -9,6 +9,11 @@ $(function() {
 	var taskmodal = new bootstrap.Modal(document.getElementById('taskmodal'));
 	var editid;
 
+	if ($('#complete').children().length == 0)
+		$('#taskdivider').addClass('invisible');
+	else if ($('#tasks').children().length == 0)
+		$('#tasks').html('<p class="text-center mt-3">No tasks available.</p>');
+
 	$('.edit').click(function() {
 		loading.show();
 		editid = $(this).data('id');
@@ -149,6 +154,49 @@ $(function() {
 					$('button').removeAttr('disabled');
 					$('input').removeAttr('readonly');
 				}
+			});
+		}
+	});
+
+	$('input[type="checkbox"]').change(function() {
+		let task = $(this).closest('.row');
+		let id = $(this).attr('id');
+		let url = $(this).data('url');
+		if ($(this).prop('checked')) {
+			$(this).closest('.row').fadeOut('fast', function() {
+				$('#taskdivider').removeClass('invisible');
+				$(this).find('.edit').addClass('invisible');
+
+				let label = $(this).find('label').text();
+				$(this).find('label').empty().html(`<del>${label}</del>`);
+				$(this).prependTo('#complete').fadeIn('fast');
+				if ($('#tasks').children().length == 0) {
+					$('#tasks').html('<p class="text-center mt-3">No tasks available.</p>');
+				}
+
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {'_token':$('meta[name="csrf-token"]').attr('content'), 'completed':1},
+				});
+			});
+		} else {
+			$(this).closest('.row').fadeOut('fast', function() {
+				$('#tasks').find('p').remove();
+				$(this).find('.edit').removeClass('invisible');
+
+				let label = $(this).find('del').text();
+				$(this).find('label').empty().text(label);
+				$(this).prependTo('#tasks').fadeIn('fast');
+				if ($('#complete').children().length == 0) {
+					$('#taskdivider').addClass('invisible');
+				}
+
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {'_token':$('meta[name="csrf-token"]').attr('content'), 'completed':0},
+				});
 			});
 		}
 	});

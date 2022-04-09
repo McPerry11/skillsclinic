@@ -28,50 +28,64 @@
 
 				<hr>
 
-				@if(count($tasks) > 0)
-				@foreach($tasks as $task)
-				<div class="row align-items-center mt-3">
-					<div class="col">
-						<div class="form-check">
-							<input type="checkbox" class="form-check-input" id="{{ $task->id }}">
-							<label class="form-check-label" for="{{ $task->id }}">{{ $task->name }}</label>
+				<div id="tasks">
+					@if(count($tasks) > 0)
+					@foreach($tasks as $task)
+					@if($task->completed == 0)
+					<div class="row align-items-center mt-3">
+						<div class="col">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" id="{{ $task->id }}" data-url="{{ url('update/' . $task->id) }}">
+								<label class="form-check-label" for="{{ $task->id }}">{{ $task->name }}</label>
+							</div>
+							@if($task->duedate != null)
+							<span class="ms-4 badge bg-danger">{{ \Carbon\Carbon::parse($task->duedate)->isoFormat('MMMM D, YYYY - h:mma') }}</span>
+							@endif
 						</div>
-						@if($task->duedate != null)
-						<span class="ms-4 badge bg-danger">{{ \Carbon\Carbon::parse($task->duedate)->isoFormat('MMMM D, YYYY - h:mma') }}</span>
-						@endif
+						<div class="col-4 col-sm-3 d-flex justify-content-end">
+							<button class="edit btn btn-primary btn-sm me-1" title="Edit" data-url="{{ url('edit/' . $task->id) }}" data-id="{{ $task->id }}">
+								<i class="fa-solid fa-edit"></i>
+							</button>
+							<button class="delete btn btn-outline-danger btn-sm" title="Delete" data-url="{{ url('delete/' . $task->id) }}" data-id="{{ $task->id }}" data-name="{{ $task->name }}">
+								<i class="fa-solid fa-trash"></i>
+							</button>
+						</div>
 					</div>
-					<div class="col-4 col-sm-3 d-flex justify-content-end">
-						<button class="edit btn btn-primary btn-sm me-1" title="Edit" data-url="{{ url('edit/' . $task->id) }}" data-id="{{ $task->id }}">
-							<i class="fa-solid fa-edit"></i>
-						</button>
-						<button class="delete btn btn-outline-danger btn-sm" title="Delete" data-url="{{ url('delete/' . $task->id) }}" data-id="{{ $task->id }}" data-name="{{ $task->name }}">
-							<i class="fa-solid fa-trash"></i>
-						</button>
-					</div>
+					@endif
+					@endforeach
+					@else
+					<p class="text-center mt-3">No tasks available.</p>
+					@endif
 				</div>
-				@endforeach
-				@else
-				<p class="text-center mt-3">No tasks available.</p>
-				@endif
 
-				{{--
-				<hr>
-				<div class="row align-items-center mt-3">
-					<div class="col">
-						<div class="form-check">
-							<input type="checkbox" class="form-check-input" id="task5" checked>
-							<label class="form-check-label " for="task5"><del>Task 5</del></label>
+				<hr id="taskdivider">
+				<div id="complete">
+					@if(count($tasks) > 0)
+					@foreach($tasks as $task)
+					@if($task->completed == 1)
+					<div class="row align-items-center mt-3">
+						<div class="col">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" id="{{ $task->id }}" data-url="{{ url('update/' . $task->id) }}" checked>
+								<label class="form-check-label " for="{{ $task->id }}"><del>{{ $task->name }}</del></label>
+							</div>
+							@if($task->duedate != null)
+							<span class="ms-4 badge bg-danger">{{ \Carbon\Carbon::parse($task->duedate)->isoFormat('MMMM D, YYYY - h:mma') }}</span>
+							@endif
+						</div>
+						<div class="col-4 col-sm-3 d-flex justify-content-end">
+							<button class="edit btn btn-primary btn-sm me-1 invisible" title="Edit" data-url="{{ url('edit/' . $task->id) }}" data-id="{{ $task->id }}">
+								<i class="fa-solid fa-edit"></i>
+							</button>
+							<button class="delete btn btn-outline-danger btn-sm" title="Delete" data-url="{{ url('delete/' . $task->id) }}" data-id="{{ $task->id }}" data-name="{{ $task->name }}">
+								<i class="fa-solid fa-trash"></i>
+							</button>
 						</div>
 					</div>
-					<div class="col-4 col-sm-3 d-flex justify-content-end">
-						<button class="btn btn-primary btn-sm me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#edittask">
-							<i class="fa-solid fa-edit"></i>
-						</button>
-						<button class="btn btn-outline-danger btn-sm" title="Delete">
-							<i class="fa-solid fa-trash"></i>
-						</button>
-					</div>
-				</div> --}}
+					@endif
+					@endforeach
+					@endif
+				</div>
 			</div>
 		</div>
 	</div>
