@@ -55,7 +55,10 @@ class TasksController extends Controller
         $task->save();
 
         $tasks = Task::all();
-        return redirect('');
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Added Successfully'
+        ]);
     }
 
     /**
@@ -79,17 +82,12 @@ class TasksController extends Controller
     {
         // returns view for editing form
         // GET method
-        $tasks = Task::orderBy('updated_at', 'desc')->get();
         $task = Task::find($id);
         if ($task->duedate != null)
             $task->duedate = Carbon::parse($task->duedate)->isoFormat('YYYY-MM-DDThh:mm');
 
-        $username = Auth::user()->username;
-
-        return view('dashboard', [
-            'tasks' => $tasks,
-            'username' => $username,
-            'edittask' => $task
+        return response()->json([
+            'task' => $task
         ]);
     }
 
@@ -110,7 +108,10 @@ class TasksController extends Controller
 
         $task->save();
 
-        return redirect('');
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Updated Successfully'
+        ]);
     }
 
     /**
@@ -126,6 +127,9 @@ class TasksController extends Controller
 
         $task->delete();
         
-        return redirect('');
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Deleted Successfully!'
+        ]);
     }
 }

@@ -30,3 +30,7 @@
 	</div>
 </div>
 @endsection
+
+@section('scripts')
+<script id="login" src="{{ asset('js/login.js') }}" data-url="{{ url('') }}"></script>
+@endsection

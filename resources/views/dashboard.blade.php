@@ -21,7 +21,7 @@
 
 				<p class="lead">Here are the things that you need to do:</p>
 				<div class="d-grid">
-					<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addtask">
+					<button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskmodal">
 						<i class="fa-solid fa-add"></i> Add New Task
 					</button>
 				</div>
@@ -41,12 +41,12 @@
 						@endif
 					</div>
 					<div class="col-4 col-sm-3 d-flex justify-content-end">
-						<a href="{{ url('edit/' . $task->id) }}" class="btn btn-primary btn-sm me-1" title="Edit">
+						<button class="edit btn btn-primary btn-sm me-1" title="Edit" data-url="{{ url('edit/' . $task->id) }}" data-id="{{ $task->id }}">
 							<i class="fa-solid fa-edit"></i>
-						</a>
-						<a href="{{ url('delete/' . $task->id) }}" class="btn btn-outline-danger btn-sm" title="Delete">
+						</button>
+						<button class="delete btn btn-outline-danger btn-sm" title="Delete" data-url="{{ url('delete/' . $task->id) }}" data-id="{{ $task->id }}" data-name="{{ $task->name }}">
 							<i class="fa-solid fa-trash"></i>
-						</a>
+						</button>
 					</div>
 				</div>
 				@endforeach
@@ -77,7 +77,17 @@
 	</div>
 </div>
 
-<form class="modal fade" id="addtask" action="{{ url('create') }}" method="POST">
+<div class="modal fade" id="loading" data-bs-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<i class="fa-solid fa-spinner fa-spin fa-xl"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<form class="modal fade" id="taskmodal" data-bs-backdrop="static" data-edit="{{ url('update/') }}" data-add="{{ url('create') }}">
 	@csrf
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
@@ -104,40 +114,8 @@
 		</div>
 	</div>
 </form>
-
-@if($edittask != null)
-<form class="modal fade" id="edittask" action="{{ url('update/' . $edittask->id) }}" method="POST">
-	@csrf
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Edit Task</h5>
-				<button class="btn-close" data-bs-dismiss="modal"></button>
-			</div>
-
-			<div class="modal-body">
-				<div class="form-floating mb-3">
-					<input type="text" class="form-control" id="task" placeholder="Task Title" name="name" value="{{ $edittask->name }}" required>
-					<label for="task">Task Title</label>
-				</div>
-				<div class="form-floating">
-					<input type="datetime-local" class="form-control" id="datetime" placeholder="Date & Time" name="duedate" value="{{ $edittask->duedate }}">
-					<label for="datetime">Date & Time</label>
-				</div>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</div>
-		</div>
-	</div>
-</form>
-@endif
 @endsection
 
 @section('scripts')
-@if($edittask != null)
 <script src="{{ asset('js/dashboard.js') }}"></script>
-@endif
 @endsection

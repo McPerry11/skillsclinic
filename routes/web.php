@@ -22,7 +22,7 @@ Route::any('logout', [LoginController::class, 'logout']);
 Route::middleware(['auth'])->group(function() {
     Route::get('', [TasksController::class, 'index']);
     Route::post('create', [TasksController::class, 'store']);
-    Route::get('edit/{id}', [TasksController::class, 'edit']);
+    Route::post('edit/{id}', [TasksController::class, 'edit']);
     Route::post('update/{id}', [TasksController::class, 'update']);
-    Route::get('delete/{id}', [TasksController::class, 'destroy']);
+    Route::post('delete/{id}', [TasksController::class, 'destroy']);
 });
